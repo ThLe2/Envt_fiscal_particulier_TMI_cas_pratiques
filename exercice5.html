@@ -3,538 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cas pratiques — Taux marginal d'imposition · TMK Performances</title>
+<title>Module — Taux marginal d'imposition · TMK Performances</title>
 <style>
 :root{
-  --bg:#f6f1ea;
-  --bg-soft:#ece3d6;
-  --card:#fffdfa;
-  --ink:#2b2230;
-  --muted:#857888;
-  --prune:#5e2750;
-  --prune-700:#4a1d3f;
-  --prune-100:#f1e4ed;
-  --or:#bd8f37;
-  --or-100:#f7edd5;
-  --line:#e7dccd;
+  --bg:#f6f1ea;--card:#fffdfa;--ink:#2b2230;--muted:#857888;
+  --prune:#5e2750;--prune-700:#4a1d3f;--prune-100:#f1e4ed;
+  --or:#bd8f37;--or-100:#f7edd5;--line:#e7dccd;
   --shadow:0 1px 2px rgba(43,34,48,.04),0 12px 30px rgba(43,34,48,.07);
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
   --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
 body{
-  margin:0;
-  background:
-    radial-gradient(1100px 500px at 100% -10%,#f3e9dd 0%,transparent 60%),
-    var(--bg);
-  color:var(--ink);
-  font-family:var(--sans);
-  line-height:1.6;
-  font-size:16px;
-  padding:28px 16px 56px;
+  margin:0;color:var(--ink);font-family:var(--sans);line-height:1.6;
+  background:radial-gradient(1100px 500px at 100% -10%,#f3e9dd 0%,transparent 60%),var(--bg);
+  padding:40px 16px 56px;
 }
 .fiche{
-  max-width:900px;
-  margin:0 auto;
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:18px;
-  box-shadow:var(--shadow);
-  overflow:hidden;
+  max-width:760px;margin:0 auto;background:var(--card);
+  border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;
 }
-
-/* HEADER */
 .fiche-header{
-  position:relative;
-  background:linear-gradient(155deg,var(--prune) 0%,var(--prune-700) 100%);
-  color:#f7eef3;
-  padding:34px 34px 30px;
+  position:relative;background:linear-gradient(155deg,var(--prune),var(--prune-700));
+  color:#f7eef3;padding:38px 36px 34px;
 }
-.fiche-header::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:4px;
-  background:linear-gradient(90deg,var(--or) 0%,#e2c074 50%,var(--or) 100%);
+.fiche-header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;
+  background:linear-gradient(90deg,var(--or),#e2c074 50%,var(--or))}
+.eyebrow{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:#e7c8a8;font-weight:700;margin-bottom:14px}
+.fiche-header h1{font-family:var(--serif);font-weight:600;font-size:32px;line-height:1.12;margin:0 0 8px;letter-spacing:-.01em}
+.fiche-header p{margin:0;color:#e3d0dd;font-size:15.5px;max-width:58ch}
+.body{padding:30px 36px 36px}
+.lead{margin:0 0 24px;color:#3a3140}
+.lead b{color:var(--prune-700)}
+.toc{list-style:none;margin:0 0 28px;padding:0}
+.toc li{
+  display:flex;align-items:center;gap:14px;padding:14px 16px;
+  border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fffdf8;
 }
-.eyebrow{
-  font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
-  color:#e7c8a8;font-weight:700;margin-bottom:14px;
+.toc .n{font-family:var(--serif);font-weight:700;font-size:13px;color:#fff;background:var(--prune);
+  border-radius:7px;padding:3px 9px;flex:0 0 auto}
+.toc .t{font-weight:600}
+.toc .d{color:var(--muted);font-size:13px;margin-left:auto;text-align:right}
+.cta{
+  display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+  background:var(--prune);color:#fff;font-weight:600;font-size:15px;
+  padding:13px 22px;border-radius:11px;transition:background .15s ease;
 }
-.fiche-title{
-  font-family:var(--serif);
-  font-weight:600;font-size:34px;line-height:1.1;margin:0 0 8px;
-  letter-spacing:-.01em;
-}
-.fiche-subtitle{margin:0;color:#e3d0dd;font-size:15.5px;max-width:60ch}
-.meta-row{
-  display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;align-items:center;
-}
-.chip{
-  display:inline-flex;align-items:center;gap:7px;
-  font-size:12px;font-weight:600;
-  padding:6px 11px;border-radius:999px;
-  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);
-  color:#f4e7ef;
-}
-.chip.param{background:var(--or-100);color:#6a4a13;border-color:transparent}
-.chip.param .dot{width:7px;height:7px;border-radius:50%;background:var(--or)}
-.chip.param.live .dot{background:#2f8a5b}
-
-/* BODY */
-.fiche-body{padding:30px 34px 36px}
-.intro{margin:0 0 22px;color:#3a3140}
-.intro b{color:var(--prune-700)}
-
-.flow{
-  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
-  margin:0 0 26px;font-size:13.5px;
-}
-.flow .step{
-  background:var(--prune-100);color:var(--prune-700);font-weight:600;
-  padding:6px 12px;border-radius:8px;
-}
-.flow .arrow{color:var(--or);font-weight:700}
-
-/* BAREME */
-.bareme{
-  border:1px solid var(--line);border-radius:14px;background:#fffdf8;
-  padding:18px 18px 8px;margin:0 0 14px;
-}
-.bareme h2{
-  font-family:var(--serif);font-size:18px;margin:0 0 4px;color:var(--prune-700);
-}
-.bareme .sub{font-size:12.5px;color:var(--muted);margin:0 0 14px}
-.tranches{display:flex;flex-wrap:wrap;gap:10px}
-.tranche{
-  flex:1 1 150px;min-width:140px;
-  border:1px solid var(--line);border-radius:11px;padding:11px 13px;background:#fff;
-}
-.tranche .rate{
-  font-family:var(--serif);font-size:22px;font-weight:600;color:var(--prune);
-  font-variant-numeric:tabular-nums;line-height:1;
-}
-.tranche .range{font-size:12px;color:var(--muted);margin-top:6px}
-
-.note{
-  border-left:3px solid var(--or);background:var(--or-100);
-  padding:12px 16px;border-radius:0 10px 10px 0;
-  font-size:13.5px;color:#5b4a23;margin:0 0 30px;
-}
-.note b{color:#4a3a14}
-
-.section-label{
-  font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--muted);font-weight:700;margin:0 0 14px;
-}
-
-/* CASES */
-.cas{
-  border:1px solid var(--line);border-radius:14px;background:#fff;
-  margin:0 0 16px;overflow:hidden;
-}
-.cas-head{
-  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
-  padding:18px 20px 4px;
-}
-.cas-num{
-  font-family:var(--serif);font-size:13px;font-weight:700;color:#fff;
-  background:var(--prune);border-radius:7px;padding:3px 9px;letter-spacing:.02em;
-}
-.cas-head h3{font-family:var(--serif);font-size:21px;margin:0;color:var(--ink)}
-.cas-tag{
-  font-size:11.5px;font-weight:600;color:var(--or);
-  background:var(--or-100);padding:4px 9px;border-radius:999px;
-}
-.cas-enonce{padding:8px 20px 0;color:#3a3140;font-size:15px}
-
-.toggle{
-  appearance:none;cursor:pointer;font-family:var(--sans);
-  margin:16px 20px 18px;
-  display:inline-flex;align-items:center;gap:9px;
-  background:var(--prune);color:#fff;border:0;
-  font-size:13.5px;font-weight:600;padding:9px 16px;border-radius:9px;
-  transition:background .15s ease;
-}
-.toggle:hover{background:var(--prune-700)}
-.toggle:focus-visible{outline:3px solid var(--or);outline-offset:2px}
-.toggle .caret{transition:transform .2s ease;font-size:11px}
-.toggle[aria-expanded="true"] .caret{transform:rotate(180deg)}
-
-.corrige{
-  border-top:1px dashed var(--line);
-  padding:4px 20px 22px;background:#fffdf8;
-}
-.corrige[hidden]{display:none}
-.corrige h4{
-  font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--muted);font-weight:700;margin:18px 0 12px;
-}
-.calc{list-style:none;margin:0;padding:0}
-.calc li{
-  display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #f1ece2;
-}
-.calc li:last-child{border-bottom:0}
-.calc .k{flex:0 0 168px;color:var(--muted);font-size:13.5px}
-.calc .v{flex:1;font-size:14.5px;font-variant-numeric:tabular-nums}
-.calc .v b{color:var(--prune-700)}
-.calc .v small{color:var(--muted);font-variant-numeric:normal}
-
-.result{
-  margin-top:18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
-  background:linear-gradient(155deg,var(--prune) 0%,var(--prune-700) 100%);
-  color:#fff;border-radius:12px;padding:16px 20px;
-}
-.result .label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
-.result .tmi{
-  font-family:var(--serif);font-size:38px;font-weight:600;line-height:1;
-  font-variant-numeric:tabular-nums;
-}
-.result .why{font-size:13px;opacity:.92;max-width:42ch}
-
-.insight{
-  margin-top:16px;border-left:3px solid var(--prune);
-  background:var(--prune-100);padding:12px 16px;border-radius:0 10px 10px 0;
-  font-size:13.5px;color:#42283b;
-}
-.insight b{color:var(--prune-700)}
-
-/* FOOTER */
-.fiche-footer{
-  border-top:1px solid var(--line);
-  padding:18px 34px;display:flex;justify-content:space-between;gap:12px;
-  flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted);
-}
-.fiche-footer a{color:var(--prune);font-weight:600;text-decoration:none}
-.fiche-footer a:hover{text-decoration:underline}
-
+.cta:hover{background:var(--prune-700)}
+.cta:focus-visible{outline:3px solid var(--or);outline-offset:2px}
+.foot{border-top:1px solid var(--line);padding:18px 36px;color:var(--muted);font-size:12px}
 @media(max-width:560px){
-  body{padding:16px 8px 40px}
-  .fiche-header{padding:26px 22px 24px}
-  .fiche-title{font-size:27px}
-  .fiche-body{padding:24px 20px 28px}
-  .calc .k{flex-basis:120px}
-  .result .tmi{font-size:32px}
-  .fiche-footer{padding:16px 22px}
+  body{padding:20px 8px 40px}
+  .fiche-header{padding:28px 22px 26px}.fiche-header h1{font-size:26px}
+  .body{padding:24px 22px 28px}
+  .toc .d{display:none}
 }
-@media(prefers-reduced-motion:reduce){
-  *{transition:none!important}
-}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <article class="fiche">
   <header class="fiche-header">
     <div class="eyebrow">TMK Performances · Cas pratiques</div>
-    <h1 class="fiche-title">Taux marginal d'imposition</h1>
-    <p class="fiche-subtitle">Déterminer la TMI d'un foyer pas à pas : revenu net imposable, parts, quotient familial, tranche atteinte.</p>
-    <div class="meta-row">
-      <span class="chip">Module · Droit et environnement fiscal du particulier</span>
-      <span class="chip param" id="paramChip"><span class="dot"></span><span id="paramTxt">Paramètres…</span></span>
-    </div>
+    <h1>Taux marginal d'imposition</h1>
+    <p>Quatre cas progressifs pour s'entraîner à déterminer la TMI d'un foyer, du plus simple au plus piégeux.</p>
   </header>
-
-  <div class="fiche-body">
-    <p class="intro">
-      Le <b>taux marginal d'imposition</b> (TMI) est le taux de la tranche la plus haute atteinte par le foyer. Il ne se lit pas sur le revenu total, mais sur le <b>quotient familial</b> (revenu net imposable ÷ nombre de parts). La méthode est toujours la même :
+  <div class="body">
+    <p class="lead">
+      Chaque cas suit la même logique : <b>revenu net imposable → parts → quotient familial → tranche → TMI</b>. Les corrigés sont détaillés et dépliables, et calculés à partir du barème en vigueur.
     </p>
-
-    <div class="flow">
-      <span class="step">Revenu net imposable</span><span class="arrow">→</span>
-      <span class="step">Parts</span><span class="arrow">→</span>
-      <span class="step">Quotient familial</span><span class="arrow">→</span>
-      <span class="step">Tranche</span><span class="arrow">→</span>
-      <span class="step">TMI</span>
-    </div>
-
-    <div class="bareme">
-      <h2>Barème en vigueur</h2>
-      <p class="sub" id="baremeSub">Taux appliqués par part de quotient familial.</p>
-      <div class="tranches" id="tranchesGrid"></div>
-    </div>
-
-    <div class="note">
-      <b>Convention de calcul.</b> Les salaires sont annualisés (× 12) puis diminués de l'abattement de 10 % pour frais professionnels (plancher et plafond chargés depuis les paramètres). Les bénéfices professionnels (BIC) sont pris tels quels. Le quotient familial est traité <b>sans plafonnement</b> (réservé à un module ultérieur).
-    </div>
-
-    <p class="section-label">Quatre cas progressifs</p>
-    <div id="cases"></div>
+    <ul class="toc">
+      <li><span class="n">1</span><span class="t">Hélène</span><span class="d">Union libre · garde alternée</span></li>
+      <li><span class="n">2</span><span class="t">Sylvain</span><span class="d">Couple marié · BIC + salaire</span></li>
+      <li><span class="n">3</span><span class="t">Nathalie</span><span class="d">Parent isolé · charge déductible</span></li>
+      <li><span class="n">4</span><span class="t">Karim &amp; Léa</span><span class="d">Abattement plafonné · revenus mixtes</span></li>
+    </ul>
+    <a class="cta" href="exercice5.html">Ouvrir les cas pratiques →</a>
   </div>
-
-  <footer class="fiche-footer">
-    <span>TMK Performances — fiche pédagogique. Corrigés recalculés à partir des paramètres chargés.</span>
-    <a href="index.html">← Retour au sommaire</a>
-  </footer>
+  <div class="foot">Module Droit et environnement fiscal du particulier — fiche pédagogique.</div>
 </article>
-
-<script>
-/* ------------------------------------------------------------------ *
- *  PARAMÈTRES FISCAUX
- *  Valeurs par défaut = revenus 2025 / imposition 2026 (celles de
- *  ta base Supabase). Pour une lecture en direct, renseigne CONFIG
- *  avec les MÊMES url + clé anon que tes autres fiches : la fiche
- *  recalcule alors tous les corrigés à partir de la base, et retombe
- *  automatiquement sur les valeurs ci-dessous si la base est injoignable.
- * ------------------------------------------------------------------ */
-const CONFIG = {
-  url: "",        // ex : "https://xxxxx.supabase.co"   (laisse vide pour rester en local)
-  anonKey: "",    // clé "anon" publique (jamais la clé service_role)
-  table: "parametres_fiscaux"
-};
-
-const DEFAULTS = {
-  annee_imposition: 2026,
-  annee_revenus: 2025,
-  abat_sal_taux: 0.10,
-  abat_sal_plancher: 509,
-  abat_sal_plafond: 14555,
-  tranches: [
-    { seuil: 11600,    taux: 0    },
-    { seuil: 29579,    taux: 0.11 },
-    { seuil: 84577,    taux: 0.30 },
-    { seuil: 181917,   taux: 0.41 },
-    { seuil: Infinity, taux: 0.45 }
-  ]
-};
-
-let P = JSON.parse(JSON.stringify(DEFAULTS), (k,v)=> v===null? Infinity : v);
-let LIVE = false;
-
-/* ----------------------------- helpers ---------------------------- */
-const eur = n => new Intl.NumberFormat('fr-FR').format(Math.round(n)) + ' €';
-const pct = t => new Intl.NumberFormat('fr-FR').format(Math.round(t*100)) + ' %';
-
-function abattementSalaire(annuel){
-  if(annuel <= 0) return 0;
-  let a = annuel * P.abat_sal_taux;
-  if(a < P.abat_sal_plancher) a = Math.min(P.abat_sal_plancher, annuel);
-  if(a > P.abat_sal_plafond)  a = P.abat_sal_plafond;
-  return a;
-}
-function salaireNet(mensuel){
-  const annuel = mensuel * 12;
-  return { annuel, abat: abattementSalaire(annuel), net: annuel - abattementSalaire(annuel) };
-}
-function tmi(qf){
-  for(const t of P.tranches){ if(qf <= t.seuil) return t.taux; }
-  return P.tranches[P.tranches.length-1].taux;
-}
-function trancheLabel(qf){
-  let bas = 0;
-  for(const t of P.tranches){
-    if(qf <= t.seuil){
-      const haut = isFinite(t.seuil) ? eur(t.seuil) : '∞';
-      return bas===0 ? `jusqu'à ${eur(t.seuil)}` : `de ${eur(bas+1)} à ${haut}`;
-    }
-    bas = t.seuil;
-  }
-  return `au-delà de ${eur(bas)}`;
-}
-
-/* --------------------------- rendu barème ------------------------- */
-function renderBareme(){
-  const grid = document.getElementById('tranchesGrid');
-  grid.innerHTML = '';
-  let bas = 0;
-  P.tranches.forEach((t,i)=>{
-    let range;
-    if(i===0) range = `Jusqu'à ${eur(t.seuil)}`;
-    else if(!isFinite(t.seuil)) range = `Au-delà de ${eur(bas)}`;
-    else range = `${eur(bas+1)} – ${eur(t.seuil)}`;
-    grid.insertAdjacentHTML('beforeend',
-      `<div class="tranche"><div class="rate">${pct(t.taux)}</div><div class="range">${range}</div></div>`);
-    bas = t.seuil;
-  });
-  document.getElementById('baremeSub').textContent =
-    `Taux appliqués par part de quotient familial · revenus ${P.annee_revenus} / imposition ${P.annee_imposition}.`;
-  const chip = document.getElementById('paramChip');
-  document.getElementById('paramTxt').textContent =
-    (LIVE ? 'Base ' : 'Paramètres ') + `${P.annee_revenus} → ${P.annee_imposition}`;
-  chip.classList.toggle('live', LIVE);
-}
-
-/* ---------------------------- les cas ----------------------------- */
-function buildCases(){
-  const cases = [];
-
-  /* ---- CAS 1 — Hélène ---- */
-  (()=>{
-    const parts = 1.25;
-    const s = salaireNet(11500);
-    const rni = s.net;
-    const qf = rni/parts;
-    cases.push({
-      num:'Cas 1', nom:'Hélène', tag:'Union libre · garde alternée',
-      enonce:`Hélène a un enfant en garde alternée. Elle vit en union libre. Elle perçoit un salaire mensuel net de 11 500 €. Elle n'a aucune charge déductible. Quel est son TMI ?`,
-      calc:[
-        ['Parts fiscales', `<b>1,25 part</b> <small>— 1 part (célibataire : en union libre, chacun déclare séparément) + 0,25 pour l'enfant en garde alternée (la demi-part est partagée entre les deux parents). Pas de case « parent isolé » : elle ne vit pas seule.</small>`],
-        ['Salaire imposable', `${eur(s.annuel)} − 10 % (${eur(s.abat)}) = <b>${eur(s.net)}</b>`],
-        ['Revenu net imposable', `<b>${eur(rni)}</b>`],
-        ['Quotient familial', `${eur(rni)} ÷ ${frPart(parts)} = <b>${eur(qf)}</b>`],
-        ['Tranche atteinte', `${trancheLabel(qf)} → <b>${pct(tmi(qf))}</b>`]
-      ],
-      tmi:qf,
-      why:`Le quotient familial se situe dans la tranche à ${pct(tmi(qf))}.`,
-      insight:`<b>Point d'attention :</b> la garde alternée vaut 0,25 part (et non 0,5), et l'union libre interdit la case « parent isolé » malgré l'enfant à charge.`
-    });
-  })();
-
-  /* ---- CAS 2 — Sylvain ---- */
-  (()=>{
-    const parts = 2.5;
-    const bic = 38000;
-    const e = salaireNet(1700);
-    const rni = bic + e.net;
-    const qf = rni/parts;
-    cases.push({
-      num:'Cas 2', nom:'Sylvain', tag:'Couple marié · BIC + salaire',
-      enonce:`Sylvain est marié. Artisan plombier, son bénéfice imposable est de 38 000 €. Son épouse, assistante comptable, perçoit un salaire mensuel net de 1 700 €. Ils ont un enfant. Quel est le TMI du foyer ?`,
-      calc:[
-        ['Parts fiscales', `<b>2,5 parts</b> <small>— 2 parts (mariés) + 0,5 pour l'enfant.</small>`],
-        ['Bénéfice de Sylvain', `<b>${eur(bic)}</b> <small>— BIC pris tel quel, sans abattement de 10 % (et plus de majoration de 25 % pour non-adhérent à un OGA).</small>`],
-        ['Salaire de l\'épouse', `${eur(e.annuel)} − 10 % (${eur(e.abat)}) = <b>${eur(e.net)}</b>`],
-        ['Revenu net imposable', `${eur(bic)} + ${eur(e.net)} = <b>${eur(rni)}</b>`],
-        ['Quotient familial', `${eur(rni)} ÷ ${frPart(parts)} = <b>${eur(qf)}</b>`],
-        ['Tranche atteinte', `${trancheLabel(qf)} → <b>${pct(tmi(qf))}</b>`]
-      ],
-      tmi:qf,
-      why:`Le quotient familial du foyer tombe dans la tranche à ${pct(tmi(qf))}.`,
-      insight:`<b>Point d'attention :</b> l'abattement de 10 % ne s'applique qu'au salaire de l'épouse, jamais au bénéfice professionnel de l'artisan.`
-    });
-  })();
-
-  /* ---- CAS 3 — Nathalie ---- */
-  (()=>{
-    const parts = 2.5;
-    const s = salaireNet(5500);
-    const foncier = 20000;
-    const pension = 9000;
-    const rniSans = s.net + foncier;
-    const rni = rniSans - pension;
-    const qf = rni/parts;
-    const qfSans = rniSans/parts;
-    cases.push({
-      num:'Cas 3', nom:'Nathalie', tag:'Parent isolé · charge déductible',
-      enonce:`Nathalie est divorcée et vit seule avec ses 2 enfants à charge exclusive. Elle perçoit un salaire mensuel net de 5 500 € et 20 000 € de revenus fonciers nets par an. Elle verse à son père, ascendant dans le besoin, une pension alimentaire déductible de 9 000 € par an. Quel est le TMI du foyer ?`,
-      calc:[
-        ['Parts fiscales', `<b>2,5 parts</b> <small>— 1 + 0,5 + 0,5 (2 enfants) + 0,5 « parent isolé » (case T, accordée une seule fois, car elle vit réellement seule).</small>`],
-        ['Salaire imposable', `${eur(s.annuel)} − 10 % (${eur(s.abat)}) = <b>${eur(s.net)}</b>`],
-        ['Revenus fonciers', `+ <b>${eur(foncier)}</b>`],
-        ['Charge déductible', `− ${eur(pension)} de pension alimentaire (justifiée)`],
-        ['Revenu net imposable', `${eur(s.net)} + ${eur(foncier)} − ${eur(pension)} = <b>${eur(rni)}</b>`],
-        ['Quotient familial', `${eur(rni)} ÷ ${frPart(parts)} = <b>${eur(qf)}</b>`],
-        ['Tranche atteinte', `${trancheLabel(qf)} → <b>${pct(tmi(qf))}</b>`]
-      ],
-      tmi:qf,
-      why:`Une fois la pension déduite, le quotient familial se situe dans la tranche à ${pct(tmi(qf))}.`,
-      insight:`<b>L'effet de la charge déductible :</b> sans la pension, le revenu serait de ${eur(rniSans)}, soit un quotient de ${eur(qfSans)} → tranche à <b>${pct(tmi(qfSans))}</b>. Déduite <em>avant</em> la division par les parts, la pension fait redescendre le foyer d'une tranche entière.`
-    });
-  })();
-
-  /* ---- CAS 4 — Karim & Léa ---- */
-  (()=>{
-    const parts = 3;
-    const k = salaireNet(16000);
-    const bic = 60000;
-    const foncier = 30000;
-    const rni = k.net + bic + foncier;
-    const qf = rni/parts;
-    const abatTheorique = k.annuel * P.abat_sal_taux;
-    const plafonne = abatTheorique > P.abat_sal_plafond;
-    cases.push({
-      num:'Cas 4', nom:'Karim & Léa', tag:'Abattement plafonné · revenus mixtes',
-      enonce:`Karim et Léa sont mariés et ont 2 enfants. Karim est salarié et perçoit 16 000 € net par mois. Léa est gérante : son bénéfice imposable est de 60 000 €. Le foyer perçoit en plus 30 000 € de revenus fonciers nets par an. Quel est le TMI du foyer ?`,
-      calc:[
-        ['Parts fiscales', `<b>3 parts</b> <small>— 2 parts (mariés) + 0,5 + 0,5 (2 enfants).</small>`],
-        ['Salaire de Karim', `${eur(k.annuel)} ; 10 % = ${eur(abatTheorique)} ${plafonne?`<small>plafonné à ${eur(P.abat_sal_plafond)}</small>`:''} → net <b>${eur(k.net)}</b>`],
-        ['Bénéfice de Léa', `<b>${eur(bic)}</b> <small>— BIC, sans abattement.</small>`],
-        ['Revenus fonciers', `+ <b>${eur(foncier)}</b>`],
-        ['Revenu net imposable', `${eur(k.net)} + ${eur(bic)} + ${eur(foncier)} = <b>${eur(rni)}</b>`],
-        ['Quotient familial', `${eur(rni)} ÷ ${frPart(parts)} = <b>${eur(qf)}</b>`],
-        ['Tranche atteinte', `${trancheLabel(qf)} → <b>${pct(tmi(qf))}</b>`]
-      ],
-      tmi:qf,
-      why:`Le quotient familial atteint la tranche à ${pct(tmi(qf))}.`,
-      insight:`<b>Le piège du cas :</b> on ne déduit pas 10 % « secs » du salaire de Karim mais l'abattement <em>plafonné</em> à ${eur(P.abat_sal_plafond)}. À ce niveau de revenu, la TMI de ${pct(tmi(qf))} ne doit pas être confondue avec la CEHR, qui ne se déclenche pas ici (seuil de 500 000 € de RFR pour un couple).`
-    });
-  })();
-
-  return cases;
-}
-
-function frPart(p){ return new Intl.NumberFormat('fr-FR').format(p).replace('.',',') + (p>1?' parts':' part'); }
-
-/* --------------------------- rendu cas ---------------------------- */
-function renderCases(){
-  const root = document.getElementById('cases');
-  root.innerHTML = '';
-  buildCases().forEach((c,idx)=>{
-    const rows = c.calc.map(([k,v])=>`<li><span class="k">${k}</span><span class="v">${v}</span></li>`).join('');
-    const id = 'corr'+idx;
-    root.insertAdjacentHTML('beforeend',`
-      <article class="cas">
-        <div class="cas-head">
-          <span class="cas-num">${c.num}</span>
-          <h3>${c.nom}</h3>
-          <span class="cas-tag">${c.tag}</span>
-        </div>
-        <p class="cas-enonce">${c.enonce}</p>
-        <button class="toggle" aria-expanded="false" aria-controls="${id}">
-          <span class="txt">Afficher le corrigé</span><span class="caret">▼</span>
-        </button>
-        <div class="corrige" id="${id}" hidden>
-          <h4>Corrigé détaillé</h4>
-          <ul class="calc">${rows}</ul>
-          <div class="result">
-            <div>
-              <div class="label">TMI du foyer</div>
-              <div class="tmi">${pct(tmi(c.tmi))}</div>
-            </div>
-            <div class="why">${c.why}</div>
-          </div>
-          <div class="insight">${c.insight}</div>
-        </div>
-      </article>`);
-  });
-  // accordéons
-  root.querySelectorAll('.toggle').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const panel = document.getElementById(btn.getAttribute('aria-controls'));
-      const open = btn.getAttribute('aria-expanded')==='true';
-      btn.setAttribute('aria-expanded', String(!open));
-      panel.hidden = open;
-      btn.querySelector('.txt').textContent = open ? 'Afficher le corrigé' : 'Masquer le corrigé';
-    });
-  });
-}
-
-/* ----------------------- lecture Supabase ------------------------- */
-async function loadParams(){
-  if(CONFIG.url && CONFIG.anonKey){
-    try{
-      const r = await fetch(
-        `${CONFIG.url}/rest/v1/${CONFIG.table}?select=*&order=annee_imposition.desc&limit=1`,
-        { headers:{ apikey:CONFIG.anonKey, Authorization:`Bearer ${CONFIG.anonKey}` } });
-      if(r.ok){
-        const rows = await r.json();
-        if(Array.isArray(rows) && rows.length){
-          const d = rows[0];
-          if(d.annee_imposition) P.annee_imposition = d.annee_imposition;
-          if(d.annee_revenus)    P.annee_revenus    = d.annee_revenus;
-          if(d.abat_sal_taux!=null)     P.abat_sal_taux     = d.abat_sal_taux>1 ? d.abat_sal_taux/100 : d.abat_sal_taux;
-          if(d.abat_sal_plancher!=null) P.abat_sal_plancher = d.abat_sal_plancher;
-          if(d.abat_sal_plafond!=null)  P.abat_sal_plafond  = d.abat_sal_plafond;
-          if(Array.isArray(d.tranches) && d.tranches.length){
-            P.tranches = d.tranches.map(t=>({ seuil: t.seuil==null? Infinity : t.seuil, taux: t.taux>1? t.taux/100 : t.taux }));
-          }
-          LIVE = true;
-        }
-      }
-    }catch(e){ /* repli silencieux sur les valeurs par défaut */ }
-  }
-  renderBareme();
-  renderCases();
-}
-
-loadParams();
-</script>
 </body>
 </html>
