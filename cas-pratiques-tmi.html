@@ -585,17 +585,24 @@ function applyRow(d){
   if(d.plafond_qf_demi!=null)P.plafond_qf_demi_part=n(d.plafond_qf_demi);
 }
 async function loadParams(){
+  let status="hors ligne";
   if(CONFIG.url && CONFIG.anonKey){
+    status="connexion…";
+    const base=`${CONFIG.url}/rest/v1/${CONFIG.table}?select=*`;
+    const H1={apikey:CONFIG.anonKey,Authorization:`Bearer ${CONFIG.anonKey}`};
+    const H2={apikey:CONFIG.anonKey};
+    async function pull(q){ let r=await fetch(base+q,{headers:H1}); if(r.status===401||r.status===403){ r=await fetch(base+q,{headers:H2}); } return r; }
     try{
-      const h={apikey:CONFIG.anonKey,Authorization:`Bearer ${CONFIG.anonKey}`};
-      const base=`${CONFIG.url}/rest/v1/${CONFIG.table}?select=*`;
-      let rows=[]; let r=await fetch(`${base}&is_active=eq.true&limit=1`,{headers:h});
-      if(r.ok)rows=await r.json();
-      if(!(Array.isArray(rows)&&rows.length)){ r=await fetch(`${base}&order=annee.desc&limit=1`,{headers:h}); if(r.ok)rows=await r.json(); }
-      if(Array.isArray(rows)&&rows.length){ applyRow(rows[0]); LIVE=true; }
-    }catch(e){/* repli silencieux */}
+      let r=await pull('&is_active=eq.true&limit=1');
+      let rows = r.ok ? await r.json() : [];
+      if(!r.ok) status="HTTP "+r.status;
+      if(r.ok && !(Array.isArray(rows)&&rows.length)){ r=await pull('&order=annee.desc&limit=1'); rows = r.ok ? await r.json() : []; if(!r.ok) status="HTTP "+r.status; }
+      if(Array.isArray(rows)&&rows.length){ applyRow(rows[0]); LIVE=true; status="base"; }
+      else if(status==="connexion…") status="aucune ligne";
+    }catch(e){ status="réseau bloqué"; }
   }
   renderBareme(); renderCases();
+  if(!LIVE){ var _el=document.getElementById('paramTxt')||document.getElementById('chipTxt'); if(_el) _el.textContent="Repli · "+status; }
 }
 loadParams();
 </script>
