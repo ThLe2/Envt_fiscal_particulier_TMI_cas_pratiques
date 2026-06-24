@@ -305,11 +305,7 @@ body{
  *  recalcule alors tous les corrigés à partir de la base, et retombe
  *  automatiquement sur les valeurs ci-dessous si la base est injoignable.
  * ------------------------------------------------------------------ */
-const CONFIG = {
-  url: "",        // ex : "https://xxxxx.supabase.co"   (laisse vide pour rester en local)
-  anonKey: "",    // clé "anon" publique (jamais la clé service_role)
-  table: "parametres_fiscaux"
-};
+const CONFIG = { url:"https://ibkvyjlglwufxvzxnysa.supabase.co", anonKey:"sb_publishable_xUfZHSOHf4TnBRRyzU_qJA_TcXIMSKX", table:"parametres_fiscaux" };
 
 const DEFAULTS = {
   annee_imposition: 2026,
@@ -568,33 +564,39 @@ function renderCases(){
 }
 
 /* ----------------------- lecture Supabase ------------------------- */
+function applyRow(d){
+  const n = x => x==null?null:Number(x);
+  const norm = x => { x=Number(x); return x>1 ? x/100 : x; };
+  if(d.bareme_seuil_0!=null) P.tranches=[
+    {seuil:n(d.bareme_seuil_0),taux:0},{seuil:n(d.bareme_seuil_11),taux:0.11},
+    {seuil:n(d.bareme_seuil_30),taux:0.30},{seuil:n(d.bareme_seuil_41),taux:0.41},
+    {seuil:Infinity,taux:0.45}];
+  if(d.annee!=null)P.annee_imposition=d.annee;
+  if(d.annee_revenus!=null)P.annee_revenus=d.annee_revenus;
+  if(d.abat_sal_taux!=null)P.abat_sal_taux=norm(d.abat_sal_taux);
+  else if(d.abattement_fp_taux!=null)P.abat_sal_taux=norm(d.abattement_fp_taux);
+  if(d.abat_sal_plancher!=null)P.abat_sal_plancher=n(d.abat_sal_plancher);
+  if(d.abat_sal_plafond!=null)P.abat_sal_plafond=n(d.abat_sal_plafond);
+  if(d.decote_taux!=null)P.decote_taux=norm(d.decote_taux);
+  if(d.decote_forfait_indiv!=null)P.decote_forfait_seul=n(d.decote_forfait_indiv);
+  if(d.decote_seuil_indiv!=null)P.decote_seuil_seul=n(d.decote_seuil_indiv);
+  if(d.decote_forfait_couple!=null)P.decote_forfait_couple=n(d.decote_forfait_couple);
+  if(d.decote_seuil_couple!=null)P.decote_seuil_couple=n(d.decote_seuil_couple);
+  if(d.plafond_qf_demi!=null)P.plafond_qf_demi_part=n(d.plafond_qf_demi);
+}
 async function loadParams(){
   if(CONFIG.url && CONFIG.anonKey){
     try{
-      const r = await fetch(
-        `${CONFIG.url}/rest/v1/${CONFIG.table}?select=*&order=annee_imposition.desc&limit=1`,
-        { headers:{ apikey:CONFIG.anonKey, Authorization:`Bearer ${CONFIG.anonKey}` } });
-      if(r.ok){
-        const rows = await r.json();
-        if(Array.isArray(rows) && rows.length){
-          const d = rows[0];
-          if(d.annee_imposition) P.annee_imposition = d.annee_imposition;
-          if(d.annee_revenus)    P.annee_revenus    = d.annee_revenus;
-          if(d.abat_sal_taux!=null)     P.abat_sal_taux     = d.abat_sal_taux>1 ? d.abat_sal_taux/100 : d.abat_sal_taux;
-          if(d.abat_sal_plancher!=null) P.abat_sal_plancher = d.abat_sal_plancher;
-          if(d.abat_sal_plafond!=null)  P.abat_sal_plafond  = d.abat_sal_plafond;
-          if(Array.isArray(d.tranches) && d.tranches.length){
-            P.tranches = d.tranches.map(t=>({ seuil: t.seuil==null? Infinity : t.seuil, taux: t.taux>1? t.taux/100 : t.taux }));
-          }
-          LIVE = true;
-        }
-      }
-    }catch(e){ /* repli silencieux sur les valeurs par défaut */ }
+      const h={apikey:CONFIG.anonKey,Authorization:`Bearer ${CONFIG.anonKey}`};
+      const base=`${CONFIG.url}/rest/v1/${CONFIG.table}?select=*`;
+      let rows=[]; let r=await fetch(`${base}&is_active=eq.true&limit=1`,{headers:h});
+      if(r.ok)rows=await r.json();
+      if(!(Array.isArray(rows)&&rows.length)){ r=await fetch(`${base}&order=annee.desc&limit=1`,{headers:h}); if(r.ok)rows=await r.json(); }
+      if(Array.isArray(rows)&&rows.length){ applyRow(rows[0]); LIVE=true; }
+    }catch(e){/* repli silencieux */}
   }
-  renderBareme();
-  renderCases();
+  renderBareme(); renderCases();
 }
-
 loadParams();
 </script>
 </body>
